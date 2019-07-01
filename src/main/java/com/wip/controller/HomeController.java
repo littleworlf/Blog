@@ -157,6 +157,7 @@ public class HomeController extends BaseController {
         this.updateArticleHits(article.getCid(),article.getHits());
         // 获取评论
         List<CommentDomain> comments = commentService.getCommentsByCId(cid);
+        System.out.println(comments.size());
         request.setAttribute("comments", comments);
 
         return "blog/detail";

@@ -8,7 +8,6 @@ import com.wip.model.UserDomain;
 import com.wip.service.log.LogService;
 import com.wip.service.user.UserService;
 import com.wip.utils.APIResponse;
-import com.wip.utils.GsonUtils;
 import com.wip.utils.TaleUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +66,7 @@ public class AuthController extends BaseController {
             @RequestParam(name = "remember_me", required = false)
             String remember_me
     ) {
-        Integer error_count = cache.get("login_error_count");
+        Integer errorCount = cache.get("login_error_count");
         try {
             // 调用Service登录方法
             UserDomain userInfo = userService.login(username, password);
@@ -77,17 +80,18 @@ public class AuthController extends BaseController {
             logService.addLog(LogActions.LOGIN.getAction(), userInfo.getUsername()+"用户", request.getRemoteAddr(), userInfo.getUid());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            error_count = null == error_count ? 1 : error_count + 1;
-            if (error_count > 3) {
+            errorCount = null == errorCount ? 1 : errorCount + 1;
+            if (errorCount > 3) {
                 return APIResponse.fail("您输入密码已经错误超过3次，请10分钟后尝试");
             }
-            System.out.println(error_count);
+            System.out.println(errorCount);
             // 设置缓存为10分钟
-            cache.set("login_error_count", error_count, 10 * 60);
+            cache.set("login_error_count", errorCount, 10 * 60);
             String msg = "登录失败";
             if (e instanceof BusinessException) {
                 msg = e.getMessage();
-            } else {
+            }
+            else {
                 LOGGER.error(msg,e);
             }
             return APIResponse.fail(msg);
