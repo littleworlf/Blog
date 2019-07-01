@@ -26,8 +26,8 @@ public class AddCommentTest {
         if (StringUtils.isBlank(comments.getContent())) {
             msg = "评论内容不能为空";
         }
-        if (comments.getContent().length() < 5 || comments.getContent().length() > 300) {
-            msg = "评论字数在5-300个字符";
+        if (comments.getContent().length() < 5 || comments.getContent().length() > 200) {
+            msg = "评论字数在5-200个字符";
         }
         if (null == comments.getCid()) {
             msg = "评论文章不能为空";
