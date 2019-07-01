@@ -1,4 +1,8 @@
-
+/**
+ * Created by IntelliJ IDEA.
+ * User: Kyrie
+ * DateTime: 2018/7/31 15:40
+ **/
 package com.wip.service.comment.impl;
 
 import com.github.pagehelper.PageHelper;
@@ -13,9 +17,6 @@ import com.wip.service.article.ContentService;
 import com.wip.service.comment.CommentService;
 import com.wip.utils.DateKit;
 import com.wip.utils.TaleUtils;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,10 +24,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+
     @Autowired
     private CommentDao commentDao;
 
@@ -132,7 +136,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @CacheEvict(value = "commentCache", allEntries = true)
     public void updateCommentStatus(Integer coid, String status) {
-        if (null == coid){
+        if (null == coid) {
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         }
         commentDao.updateCommentStatus(coid, status);
