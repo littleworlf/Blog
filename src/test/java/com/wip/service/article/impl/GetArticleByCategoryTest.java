@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class GetArticleByCategoryTest {
     @Autowired
     private ContentDao mapper;
-    // 此方法是在执行@Test标注的方法之前执行
+    
     private SqlSessionFactory sqlSessionFactory;
 
     @Before
