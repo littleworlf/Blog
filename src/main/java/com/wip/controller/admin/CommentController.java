@@ -1,7 +1,9 @@
 package com.wip.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.wip.constant.LogActions;
 import com.wip.controller.BaseController;
+import com.wip.dao.CommentDao;
 import com.wip.dto.cond.CommentCond;
 import com.wip.model.CommentDomain;
 import com.wip.model.UserDomain;
@@ -28,6 +30,8 @@ public class CommentController extends BaseController {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CommentDao commentDao;
 
     @ApiOperation("进入评论列表页")
     @GetMapping(value = "")
@@ -71,6 +75,24 @@ public class CommentController extends BaseController {
             LOGGER.error(e.getMessage());
             return APIResponse.fail(e.getMessage());
         }
+        return APIResponse.success();
+    }
+
+
+
+    @ApiOperation("删除评论")
+    @PostMapping("/delete")
+    @ResponseBody
+    public APIResponse deleteComment(
+            @ApiParam(name = "coid", value = "评论ID", required = true)
+            @RequestParam(name = "coid", required = true)
+                    Integer coid,
+            HttpServletRequest request
+    ) {
+        // 删除文章
+        commentDao.deleteComment(coid);
+        // 写入日志
+        //logService.addLog(LogActions.DEL_ARTICLE.getAction(), cid+"",request.getRemoteAddr(),this.getUid(request));
         return APIResponse.success();
     }
 
