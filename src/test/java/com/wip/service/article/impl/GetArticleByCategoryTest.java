@@ -51,7 +51,7 @@ public class GetArticleByCategoryTest {
     public void UT_TC_03_01_03() throws Exception{
         String category="默认分类";
         List<ContentDomain> content =mapper.getArticleByCategory(category);
-        assertEquals(4,content.size());
+        assertEquals(1,content.size());
     }
     @Test
     public void UT_TC_03_01_04() throws Exception{
